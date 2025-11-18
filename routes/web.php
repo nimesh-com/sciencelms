@@ -5,9 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\admin\StudentController;
+use App\Http\Controllers\LMS\LMSController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('student.master');
 });
 
 /*  Route::get('/dashboard', function () {
@@ -27,6 +28,12 @@ Route::prefix('admin', ['middleware' => ['auth', 'verified', 'role:admin']])->gr
 
     /* Online Class */
     Route::resource('classes', 'App\Http\Controllers\admin\OnClassController');
+});
+
+
+/* Student LMS */
+Route::prefix('student', ['middleware' => ['auth', 'verified', 'role:student']])->group(function () {
+    Route::get('/LMS', [LMSController::class, 'index'])->name('LMS');
 });
 
 

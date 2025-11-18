@@ -37,6 +37,16 @@
                 </li>
                 @endforelse
 
+                <li class="nav-header">
+                      <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <button type="submit" class="btn btn-block btn-outline-danger">
+                {{ __('Log Out') }}
+            </button>
+        </form>
+                </li>
+
 
             </ul>
         </nav>
