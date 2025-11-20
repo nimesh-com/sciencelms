@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\admin\StudentController;
 use App\Http\Controllers\LMS\LMSController;
+
 
 Route::get('/', function () {
     return view('student.master');
@@ -45,5 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 require __DIR__ . '/auth.php';
