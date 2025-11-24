@@ -13,4 +13,10 @@ class Student extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+  public function onClasses()
+{
+    return $this->hasMany(OnClass::class, 'grade', 'grade');
+}
+
 }

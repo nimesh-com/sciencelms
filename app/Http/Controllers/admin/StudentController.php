@@ -6,7 +6,8 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Mail\StudentAccountDetailsMail;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -97,6 +98,7 @@ class StudentController extends Controller
             'password' => $plainPassword,
         ]);
 
+        $user->sendEmailVerificationNotification();
         // ===== Save Student =====
         $studentData = [
             'name' => $request->name,
@@ -111,6 +113,14 @@ class StudentController extends Controller
 
 
         Student::create($studentData);
+        
+        
+        //SEND DEFAULT PASSWORD EMAIL
+        Mail::to($request->email)->send(new StudentAccountDetailsMail(
+            $request->name,
+            $admissionNo,
+            $plainPassword
+        ));
 
         return redirect()->route('students.index')
             ->with('success', 'Student registered successfully! Admission No: ' . $admissionNo . ' | Default Password: ' . $plainPassword);
