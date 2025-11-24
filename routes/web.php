@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\OnClassController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
@@ -12,11 +13,9 @@ Route::get('/', function () {
     return view('student.master');
 });
 
-/*  Route::get('/dashboard', function () {
-    return view('admin.master');
-})->middleware(['auth', 'verified'])->name('dashboard'); */
+ Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->middleware(['auth', 'verified'])->name('dashboard'); 
 
-Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
+/* Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard'); */
 
 Route::prefix('admin', ['middleware' => ['auth', 'verified', 'role:admin']])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDB'])->name('admin');
@@ -28,18 +27,16 @@ Route::prefix('admin', ['middleware' => ['auth', 'verified', 'role:admin']])->gr
     /* End of Student Routes */
 
     /* Online Class */
-    Route::resource('classes', 'App\Http\Controllers\admin\OnClassController');
+    Route::resource('classes', OnClassController::class);
 });
 
 
 /* Student LMS */
-Route::prefix('student', ['middleware' => ['auth', 'verified', 'role:student']])->group(function () {
-    Route::get('/LMS', [LMSController::class, 'index'])->name('LMS');
-});
-
-
-
-
+Route::prefix('student')
+    ->middleware(['auth', 'verified', 'role:student'])
+    ->group(function () {
+        Route::get('/LMS', [LMSController::class, 'index'])->name('LMS');
+    });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
