@@ -23,7 +23,3 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 
-# Block these files in public folder
-/public/index.php
-/public/.htaccess
-/public/favicon.ico
