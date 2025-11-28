@@ -30,6 +30,12 @@ Route::get('/courses', function () {
     return view('student/course');
 });
 
+Route::get('/lms', function () {
+    return view('student/LMS/live');
+});
+
+
+
 
 Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -64,6 +70,9 @@ Route::prefix('student')
     ->middleware(['auth', 'verified', 'role:student'])
     ->group(function () {
         Route::get('/LMS', [LMSController::class, 'index'])->name('LMS');
+
+        Route::get('/live',[LMSController::class, 'LiveSession'])->name('student.lms.classroom');
+        Route::get('/recorded',[LMSController::class, 'RecordedSessions'])->name('student.lms.recorded');
     });
 
 Route::middleware('auth')->group(function () {
